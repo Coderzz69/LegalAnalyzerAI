@@ -1,5 +1,14 @@
 /* Custom styles for AutoLawyer application */
 
+/* Base styles and layout */
+:root {
+    --primary-gradient: linear-gradient(135deg, var(--bs-primary), #3a0ca3);
+    --card-border-radius: 12px;
+    --card-box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    --accent-color: #4cc9f0;
+    --header-gradient: linear-gradient(135deg, #3a0ca3, var(--bs-primary) 70%);
+}
+
 /* Make body take full height for page layout */
 html, body {
     min-height: 100vh;
@@ -8,37 +17,202 @@ html, body {
 body {
     display: flex;
     flex-direction: column;
+    background-color: #121212;
+    background-image: 
+        radial-gradient(circle at 25% 25%, rgba(59, 130, 246, 0.05) 0%, transparent 50%),
+        radial-gradient(circle at 75% 75%, rgba(16, 185, 129, 0.05) 0%, transparent 50%);
+    background-attachment: fixed;
 }
 
 .container {
     flex: 1;
 }
 
+/* Header styling */
+h1.display-4 {
+    background: var(--header-gradient);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    margin-bottom: 1.5rem;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+}
+
+/* Card enhancements */
+.card {
+    border-radius: var(--card-border-radius);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: var(--card-box-shadow);
+    backdrop-filter: blur(10px);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    overflow: hidden;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+}
+
+.card-header {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    background: linear-gradient(to right, rgba(59, 130, 246, 0.1), rgba(16, 185, 129, 0.1));
+}
+
+.card-title {
+    font-weight: 700;
+    color: var(--bs-primary);
+}
+
 /* Upload area styling */
 .document-upload-wrapper {
     position: relative;
+    margin-bottom: 2rem;
 }
 
-/* Styling for code blocks in clauses */
+.form-control {
+    border-radius: 8px;
+    padding: 0.75rem 1rem;
+    background-color: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: all 0.3s ease;
+}
+
+.form-control:focus {
+    box-shadow: 0 0 0 0.25rem rgba(var(--bs-primary-rgb), 0.25);
+    background-color: rgba(255, 255, 255, 0.1);
+    border-color: var(--bs-primary);
+}
+
+/* Button enhancements */
+.btn {
+    border-radius: 8px;
+    padding: 0.75rem 1.5rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    transition: all 0.3s ease;
+}
+
+.btn-primary {
+    background: var(--primary-gradient);
+    border: none;
+    box-shadow: 0 4px 15px rgba(13, 110, 253, 0.4);
+}
+
+.btn-primary:hover {
+    background: linear-gradient(135deg, #3a0ca3, var(--bs-primary));
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(13, 110, 253, 0.5);
+}
+
+.btn-outline-secondary {
+    border-width: 2px;
+    font-weight: 600;
+}
+
+.btn-outline-secondary:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* List group styling */
+.list-group-item {
+    background-color: transparent;
+    border-color: rgba(255, 255, 255, 0.1);
+    color: var(--bs-light);
+    padding: 1rem;
+    transition: all 0.2s ease;
+}
+
+.list-group-item:hover {
+    background-color: rgba(var(--bs-primary-rgb), 0.1);
+    transform: translateX(5px);
+}
+
+.list-group-item i {
+    color: var(--accent-color);
+}
+
+/* Alert styling */
+.alert {
+    border-radius: 10px;
+    border: none;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.alert-primary {
+    background: linear-gradient(to right, rgba(59, 130, 246, 0.1), rgba(16, 185, 129, 0.1));
+    border-left: 4px solid var(--bs-primary);
+}
+
+/* Code and pre styling */
 pre {
     margin-bottom: 0;
     white-space: pre-wrap;
     word-wrap: break-word;
+    border-radius: 8px;
+    background-color: rgba(0, 0, 0, 0.3) !important;
 }
 
 pre code {
     padding: 0;
     background-color: transparent;
+    color: #e6e6e6;
 }
 
-/* Custom styling for the accordion items */
+/* Accordion enhancements */
+.accordion {
+    border-radius: var(--card-border-radius);
+    overflow: hidden;
+}
+
+.accordion-item {
+    background-color: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.accordion-button {
+    background-color: rgba(255, 255, 255, 0.03);
+    color: var(--bs-light);
+    font-weight: 600;
+    padding: 1.25rem;
+    transition: all 0.3s ease;
+}
+
 .accordion-button:not(.collapsed) {
-    background-color: rgba(13, 110, 253, 0.1);
+    background: linear-gradient(to right, rgba(var(--bs-primary-rgb), 0.15), transparent);
     color: var(--bs-primary);
 }
 
 .accordion-button:focus {
     box-shadow: none;
+    background-color: rgba(var(--bs-primary-rgb), 0.1);
+}
+
+.accordion-collapse {
+    background-color: rgba(0, 0, 0, 0.2);
+}
+
+.accordion-body {
+    padding: 1.5rem;
+}
+
+/* Footer styling */
+footer {
+    background: linear-gradient(to right, #121212, #1e1e1e) !important;
+    padding: 2rem 0 !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* Section headings */
+.clause-original h5, .clause-explanation h5 {
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+
+/* Text highlights */
+.text-primary, .text-info, .text-success, .text-warning, .text-danger {
+    font-weight: 600;
 }
 
 /* Loading indicator styles */
@@ -49,18 +223,28 @@ pre code {
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.7);
+    background-color: rgba(0, 0, 0, 0.8);
     z-index: 1000;
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
+    backdrop-filter: blur(5px);
 }
 
 .spinner-message {
     color: white;
     margin-top: 15px;
     font-size: 1.2rem;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+    0% { opacity: 1; }
+    50% { opacity: 0.7; }
+    100% { opacity: 1; }
 }
 
 /* Print styles */
@@ -84,5 +268,6 @@ pre code {
     
     body {
         background-color: white !important;
+        background-image: none !important;
     }
 }

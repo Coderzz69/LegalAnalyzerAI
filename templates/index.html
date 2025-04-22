@@ -9,12 +9,48 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
+    <!-- Header with animated background -->
+    <div class="position-absolute top-0 start-0 w-100 overflow-hidden" style="height: 35vh; z-index: -1;">
+        <div class="position-absolute w-100 h-100" style="background: linear-gradient(45deg, rgba(59, 130, 246, 0.4), rgba(16, 185, 129, 0.1)); opacity: 0.6;"></div>
+        <div class="position-absolute w-100 h-100" style="background-size: 20px 20px; background-image: radial-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 0); background-position: -19px -19px;"></div>
+    </div>
+
     <div class="container py-5">
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <div class="text-center mb-5">
-                    <h1 class="display-4 fw-bold"><i class="bi bi-file-earmark-text me-2"></i>AutoLawyer</h1>
-                    <p class="lead">AI-powered legal contract analysis and summarization</p>
+                    <div class="mb-4">
+                        <svg width="80" height="80" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M7 18H17V16H7V18Z" fill="url(#paint0_linear)"/>
+                            <path d="M17 14H7V12H17V14Z" fill="url(#paint1_linear)"/>
+                            <path d="M7 10H11V8H7V10Z" fill="url(#paint2_linear)"/>
+                            <path d="M6 2C4.9 2 4.01 2.9 4.01 4L4 20C4 21.1 4.89 22 5.99 22H18C19.1 22 20 21.1 20 20V8L14 2H6ZM13 9V3.5L18.5 9H13Z" fill="url(#paint3_linear)"/>
+                            <defs>
+                                <linearGradient id="paint0_linear" x1="7" y1="17" x2="17" y2="17" gradientUnits="userSpaceOnUse">
+                                    <stop stop-color="#3A0CA3"/>
+                                    <stop offset="1" stop-color="#4CC9F0"/>
+                                </linearGradient>
+                                <linearGradient id="paint1_linear" x1="7" y1="13" x2="17" y2="13" gradientUnits="userSpaceOnUse">
+                                    <stop stop-color="#3A0CA3"/>
+                                    <stop offset="1" stop-color="#4CC9F0"/>
+                                </linearGradient>
+                                <linearGradient id="paint2_linear" x1="7" y1="9" x2="11" y2="9" gradientUnits="userSpaceOnUse">
+                                    <stop stop-color="#3A0CA3"/>
+                                    <stop offset="1" stop-color="#4CC9F0"/>
+                                </linearGradient>
+                                <linearGradient id="paint3_linear" x1="4" y1="12" x2="20" y2="12" gradientUnits="userSpaceOnUse">
+                                    <stop stop-color="#3A0CA3"/>
+                                    <stop offset="1" stop-color="#4CC9F0"/>
+                                </linearGradient>
+                            </defs>
+                        </svg>
+                    </div>
+                    <h1 class="display-4 fw-bold">AutoLawyer</h1>
+                    <p class="lead mb-0">AI-powered legal contract analysis and summarization</p>
+                    <div class="d-flex align-items-center justify-content-center mt-2">
+                        <span class="badge bg-primary me-2">Powered by OpenAI</span>
+                        <span class="badge bg-secondary">GPT-4o</span>
+                    </div>
                 </div>
 
                 {% with messages = get_flashed_messages(with_categories=true) %}
@@ -28,21 +64,25 @@
                     {% endif %}
                 {% endwith %}
 
-                <div class="card shadow-sm">
+                <div class="card shadow-sm mb-4">
+                    <div class="card-header py-3">
+                        <h2 class="card-title h4 mb-0">Upload a Legal Document</h2>
+                    </div>
                     <div class="card-body p-4">
-                        <h2 class="card-title mb-4">Upload a Legal Document</h2>
-                        
-                        <form action="{{ url_for('analyze') }}" method="post" enctype="multipart/form-data">
+                        <form action="{{ url_for('analyze') }}" method="post" enctype="multipart/form-data" class="upload-form">
                             <div class="mb-4">
-                                <label for="document-upload" class="form-label">Select a document</label>
+                                <label for="document-upload" class="form-label fw-bold mb-3">Select a document to analyze</label>
                                 <div class="document-upload-wrapper">
-                                    <input type="file" class="form-control" id="document-upload" name="document" accept=".txt,.doc,.docx">
+                                    <input type="file" class="form-control form-control-lg" id="document-upload" name="document" accept=".txt,.doc,.docx">
                                 </div>
-                                <small class="text-muted">Supported formats: .txt, .doc, .docx (text content only)</small>
+                                <div class="form-text mt-2">
+                                    <i class="bi bi-info-circle me-1"></i>
+                                    Supported formats: .txt, .doc, .docx (text content only)
+                                </div>
                             </div>
                             
                             <div class="d-grid gap-2">
-                                <button type="submit" class="btn btn-primary" id="analyze-btn">
+                                <button type="submit" class="btn btn-primary btn-lg" id="analyze-btn">
                                     <i class="bi bi-search me-2"></i>Analyze Document
                                 </button>
                             </div>
@@ -51,36 +91,92 @@
                 </div>
 
                 <div class="card shadow-sm mt-4">
+                    <div class="card-header py-3">
+                        <h3 class="card-title h4 mb-0">How It Works</h3>
+                    </div>
                     <div class="card-body p-4">
-                        <h3 class="card-title mb-3">How It Works</h3>
-                        <ul class="list-group list-group-flush mb-0">
-                            <li class="list-group-item">
-                                <i class="bi bi-upload me-2"></i>
-                                <strong>Upload</strong> your legal document
-                            </li>
-                            <li class="list-group-item">
-                                <i class="bi bi-cpu me-2"></i>
-                                <strong>Analyze</strong> using advanced AI
-                            </li>
-                            <li class="list-group-item">
-                                <i class="bi bi-file-earmark-text me-2"></i>
-                                <strong>Review</strong> document type and summary
-                            </li>
-                            <li class="list-group-item">
-                                <i class="bi bi-translate me-2"></i>
-                                <strong>Understand</strong> key clauses in plain English
-                            </li>
-                        </ul>
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="steps-container">
+                                    <div class="step d-flex mb-4">
+                                        <div class="step-icon me-3">
+                                            <div class="icon-circle d-flex align-items-center justify-content-center rounded-circle bg-primary text-white" style="width: 50px; height: 50px;">
+                                                <i class="bi bi-upload fs-4"></i>
+                                            </div>
+                                        </div>
+                                        <div class="step-content">
+                                            <h4 class="h5 mb-1">Upload</h4>
+                                            <p class="mb-0">Upload your legal document in TXT or DOC format</p>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="step d-flex mb-4">
+                                        <div class="step-icon me-3">
+                                            <div class="icon-circle d-flex align-items-center justify-content-center rounded-circle bg-info text-white" style="width: 50px; height: 50px;">
+                                                <i class="bi bi-cpu fs-4"></i>
+                                            </div>
+                                        </div>
+                                        <div class="step-content">
+                                            <h4 class="h5 mb-1">Analyze</h4>
+                                            <p class="mb-0">Our AI analyzes the document using advanced language models</p>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="step d-flex mb-4">
+                                        <div class="step-icon me-3">
+                                            <div class="icon-circle d-flex align-items-center justify-content-center rounded-circle bg-success text-white" style="width: 50px; height: 50px;">
+                                                <i class="bi bi-file-earmark-text fs-4"></i>
+                                            </div>
+                                        </div>
+                                        <div class="step-content">
+                                            <h4 class="h5 mb-1">Review</h4>
+                                            <p class="mb-0">Get document type identification and purpose summary</p>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="step d-flex">
+                                        <div class="step-icon me-3">
+                                            <div class="icon-circle d-flex align-items-center justify-content-center rounded-circle bg-warning text-white" style="width: 50px; height: 50px;">
+                                                <i class="bi bi-translate fs-4"></i>
+                                            </div>
+                                        </div>
+                                        <div class="step-content">
+                                            <h4 class="h5 mb-1">Understand</h4>
+                                            <p class="mb-0">Key legal clauses explained in plain, understandable English</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card mt-4 bg-dark">
+                    <div class="card-body p-4">
+                        <div class="d-flex align-items-center">
+                            <div class="me-3">
+                                <i class="bi bi-shield-check text-primary fs-3"></i>
+                            </div>
+                            <div>
+                                <h4 class="mb-1">Smart Contract Analysis</h4>
+                                <p class="mb-0 text-secondary">Identifies and explains 5 critical contract clauses: Termination, Confidentiality, Payment Terms, Intellectual Property, and Dispute Resolution.</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <footer class="container-fluid py-3 mt-5 bg-dark">
-        <div class="text-center">
-            <p class="mb-0">AutoLawyer - AI Legal Assistant</p>
-            <small class="text-muted">Designed to analyze and summarize legal documents</small>
+    <footer class="mt-5">
+        <div class="container py-4">
+            <div class="row justify-content-center">
+                <div class="col-md-8 text-center">
+                    <h5 class="mb-3">AutoLawyer - AI Legal Assistant</h5>
+                    <p class="text-muted mb-0">Designed to analyze and summarize legal documents with precision</p>
+                    <p class="mt-3 mb-0"><small class="text-muted">© 2025 AutoLawyer. For informational purposes only. Not legal advice.</small></p>
+                </div>
+            </div>
         </div>
     </footer>
 
