@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AutoLawyer - Analysis Results</title>
+    <link rel="stylesheet" href="https://cdn.replit.com/agent/bootstrap-agent-dark-theme.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11.7.0/styles/github-dark.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="container py-5">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1 class="mb-0"><i class="bi bi-file-earmark-text me-2"></i>AutoLawyer</h1>
+            <a href="{{ url_for('index') }}" class="btn btn-outline-secondary">
+                <i class="bi bi-arrow-left me-2"></i>Upload Another Document
+            </a>
+        </div>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <div class="card shadow-sm mb-4">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h2 class="card-title mb-0">Document Analysis</h2>
+                    <button class="btn btn-sm btn-outline-primary" id="print-btn">
+                        <i class="bi bi-printer me-1"></i>Print
+                    </button>
+                </div>
+
+                <div class="alert alert-primary d-flex" role="alert">
+                    <div class="me-3">
+                        <i class="bi bi-info-circle-fill fs-4"></i>
+                    </div>
+                    <div>
+                        <h4 class="alert-heading">Document Type: {{ analysis.document_type }}</h4>
+                        <p class="mb-0">{{ analysis.summary }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card shadow-sm mb-5">
+            <div class="card-header bg-transparent">
+                <h3 class="mb-0">Key Clauses Analysis</h3>
+            </div>
+            <div class="card-body">
+                <div class="accordion" id="clausesAccordion">
+                    <!-- Termination Clause -->
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#terminationClause" aria-expanded="true" aria-controls="terminationClause">
+                                <i class="bi bi-x-circle-fill me-2 text-danger"></i> Termination
+                            </button>
+                        </h2>
+                        <div id="terminationClause" class="accordion-collapse collapse show" data-bs-parent="#clausesAccordion">
+                            <div class="accordion-body">
+                                <div class="clause-original mb-3">
+                                    <h5 class="text-muted mb-2">Original Text:</h5>
+                                    <div class="p-3 bg-dark rounded">
+                                        <pre class="mb-0"><code>{{ analysis.clauses.termination.original_text }}</code></pre>
+                                    </div>
+                                </div>
+                                <div class="clause-explanation">
+                                    <h5 class="text-muted mb-2">Plain English Explanation:</h5>
+                                    <div class="p-3 border border-secondary rounded">
+                                        {{ analysis.clauses.termination.explanation }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Confidentiality Clause -->
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#confidentialityClause" aria-expanded="false" aria-controls="confidentialityClause">
+                                <i class="bi bi-lock-fill me-2 text-warning"></i> Confidentiality
+                            </button>
+                        </h2>
+                        <div id="confidentialityClause" class="accordion-collapse collapse" data-bs-parent="#clausesAccordion">
+                            <div class="accordion-body">
+                                <div class="clause-original mb-3">
+                                    <h5 class="text-muted mb-2">Original Text:</h5>
+                                    <div class="p-3 bg-dark rounded">
+                                        <pre class="mb-0"><code>{{ analysis.clauses.confidentiality.original_text }}</code></pre>
+                                    </div>
+                                </div>
+                                <div class="clause-explanation">
+                                    <h5 class="text-muted mb-2">Plain English Explanation:</h5>
+                                    <div class="p-3 border border-secondary rounded">
+                                        {{ analysis.clauses.confidentiality.explanation }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Payment Terms Clause -->
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#paymentClause" aria-expanded="false" aria-controls="paymentClause">
+                                <i class="bi bi-cash-coin me-2 text-success"></i> Payment Terms
+                            </button>
+                        </h2>
+                        <div id="paymentClause" class="accordion-collapse collapse" data-bs-parent="#clausesAccordion">
+                            <div class="accordion-body">
+                                <div class="clause-original mb-3">
+                                    <h5 class="text-muted mb-2">Original Text:</h5>
+                                    <div class="p-3 bg-dark rounded">
+                                        <pre class="mb-0"><code>{{ analysis.clauses.payment_terms.original_text }}</code></pre>
+                                    </div>
+                                </div>
+                                <div class="clause-explanation">
+                                    <h5 class="text-muted mb-2">Plain English Explanation:</h5>
+                                    <div class="p-3 border border-secondary rounded">
+                                        {{ analysis.clauses.payment_terms.explanation }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Intellectual Property Clause -->
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#ipClause" aria-expanded="false" aria-controls="ipClause">
+                                <i class="bi bi-lightbulb-fill me-2 text-info"></i> Intellectual Property
+                            </button>
+                        </h2>
+                        <div id="ipClause" class="accordion-collapse collapse" data-bs-parent="#clausesAccordion">
+                            <div class="accordion-body">
+                                <div class="clause-original mb-3">
+                                    <h5 class="text-muted mb-2">Original Text:</h5>
+                                    <div class="p-3 bg-dark rounded">
+                                        <pre class="mb-0"><code>{{ analysis.clauses.intellectual_property.original_text }}</code></pre>
+                                    </div>
+                                </div>
+                                <div class="clause-explanation">
+                                    <h5 class="text-muted mb-2">Plain English Explanation:</h5>
+                                    <div class="p-3 border border-secondary rounded">
+                                        {{ analysis.clauses.intellectual_property.explanation }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Dispute Resolution Clause -->
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#disputeClause" aria-expanded="false" aria-controls="disputeClause">
+                                <i class="bi bi-shield-check me-2 text-primary"></i> Dispute Resolution
+                            </button>
+                        </h2>
+                        <div id="disputeClause" class="accordion-collapse collapse" data-bs-parent="#clausesAccordion">
+                            <div class="accordion-body">
+                                <div class="clause-original mb-3">
+                                    <h5 class="text-muted mb-2">Original Text:</h5>
+                                    <div class="p-3 bg-dark rounded">
+                                        <pre class="mb-0"><code>{{ analysis.clauses.dispute_resolution.original_text }}</code></pre>
+                                    </div>
+                                </div>
+                                <div class="clause-explanation">
+                                    <h5 class="text-muted mb-2">Plain English Explanation:</h5>
+                                    <div class="p-3 border border-secondary rounded">
+                                        {{ analysis.clauses.dispute_resolution.explanation }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card bg-light text-dark">
+            <div class="card-body">
+                <div class="d-flex">
+                    <div class="me-3">
+                        <i class="bi bi-exclamation-triangle-fill fs-4 text-warning"></i>
+                    </div>
+                    <div>
+                        <h4>Disclaimer</h4>
+                        <p class="mb-0">
+                            This analysis is provided for informational purposes only and should not be considered legal advice. 
+                            For specific legal concerns, please consult with a qualified attorney.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="container-fluid py-3 mt-5 bg-dark">
+        <div class="text-center">
+            <p class="mb-0">AutoLawyer - AI Legal Assistant</p>
+            <small class="text-muted">Designed to analyze and summarize legal documents</small>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/highlight.js@11.7.0/lib/highlight.min.js"></script>
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>

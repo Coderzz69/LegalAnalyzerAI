@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AutoLawyer - AI Legal Assistant</title>
+    <link rel="stylesheet" href="https://cdn.replit.com/agent/bootstrap-agent-dark-theme.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="text-center mb-5">
+                    <h1 class="display-4 fw-bold"><i class="bi bi-file-earmark-text me-2"></i>AutoLawyer</h1>
+                    <p class="lead">AI-powered legal contract analysis and summarization</p>
+                </div>
+
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                        {% for category, message in messages %}
+                            <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                                {{ message }}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+
+                <div class="card shadow-sm">
+                    <div class="card-body p-4">
+                        <h2 class="card-title mb-4">Upload a Legal Document</h2>
+                        
+                        <form action="{{ url_for('analyze') }}" method="post" enctype="multipart/form-data">
+                            <div class="mb-4">
+                                <label for="document-upload" class="form-label">Select a document</label>
+                                <div class="document-upload-wrapper">
+                                    <input type="file" class="form-control" id="document-upload" name="document" accept=".txt,.doc,.docx">
+                                </div>
+                                <small class="text-muted">Supported formats: .txt, .doc, .docx (text content only)</small>
+                            </div>
+                            
+                            <div class="d-grid gap-2">
+                                <button type="submit" class="btn btn-primary" id="analyze-btn">
+                                    <i class="bi bi-search me-2"></i>Analyze Document
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="card shadow-sm mt-4">
+                    <div class="card-body p-4">
+                        <h3 class="card-title mb-3">How It Works</h3>
+                        <ul class="list-group list-group-flush mb-0">
+                            <li class="list-group-item">
+                                <i class="bi bi-upload me-2"></i>
+                                <strong>Upload</strong> your legal document
+                            </li>
+                            <li class="list-group-item">
+                                <i class="bi bi-cpu me-2"></i>
+                                <strong>Analyze</strong> using advanced AI
+                            </li>
+                            <li class="list-group-item">
+                                <i class="bi bi-file-earmark-text me-2"></i>
+                                <strong>Review</strong> document type and summary
+                            </li>
+                            <li class="list-group-item">
+                                <i class="bi bi-translate me-2"></i>
+                                <strong>Understand</strong> key clauses in plain English
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="container-fluid py-3 mt-5 bg-dark">
+        <div class="text-center">
+            <p class="mb-0">AutoLawyer - AI Legal Assistant</p>
+            <small class="text-muted">Designed to analyze and summarize legal documents</small>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>
